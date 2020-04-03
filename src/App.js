@@ -7,6 +7,7 @@ import Character from './components/Character.js';
 import HouseStarkFounder from './components/HouseStarkFounder.js';
 import Tyrell from './components/Tyrell.js';
 import TargaryenRegion from './components/TargaryenRegion.js';
+import Lannister from './components/Lannister.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,7 +19,8 @@ class App extends React.Component {
       starkFounder: null,
       born: null,
       birthPlace: null,
-      region: null
+      region: null,
+      coat: null
     };
   }
 
@@ -64,6 +66,16 @@ class App extends React.Component {
            console.error(e);
        }
    }
+
+   async houseLannister() {
+       try{
+           const coatOfArms = await axios.get('http://www.anapioficeandfire.com/api/houses/229');
+           console.log("data--->>", coatOfArms);
+           this.setState({coat: coatOfArms.data});
+       }    catch(e) {
+           console.error(e);
+       }
+   }
   
 
   
@@ -73,6 +85,7 @@ class App extends React.Component {
     this.jonSnowBorn();
     this.margaeryTyrellBorn();
     this.regionTargaryen();
+    this.houseLannister();
   }
 
   render() {
@@ -82,6 +95,8 @@ class App extends React.Component {
           <Character info={ this.state.born } />
           <Tyrell info={ this.state.birthPlace }/>
           <TargaryenRegion info={ this.state.region}></TargaryenRegion>
+          <Lannister info = {this.state.coat} />
+
 
       </div>
     );
