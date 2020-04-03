@@ -1,0 +1,39 @@
+import React, { Component } from 'react'
+import './App.css';
+import axios from 'axios';
+
+export default class App extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoaded: false,
+            data: []
+        }
+    }
+
+    componentDidMount() {
+
+        axios.get("http://anapioficeandfire.com/api/characters/583")
+        .then(res => {
+            const born = res.data.results;
+            console.log("place of birth--->",  born)
+
+            this.setState({data: born})
+        })
+        .catch(error => {
+            console.log('there is an error', error)
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>Game of Thrones</h1>
+                <ul>
+                    {this.state.data.map((born, id) => <li key={id}> response.born</li>)}
+                </ul>
+            </div>
+        )
+    }
+}
