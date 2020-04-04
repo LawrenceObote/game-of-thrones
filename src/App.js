@@ -22,7 +22,8 @@ class App extends React.Component {
       birthPlace: null,
       region: null,
       coat: null,
-      seats: null
+      seats: null,
+      aliases: null
     };
   }
 
@@ -127,8 +128,8 @@ class App extends React.Component {
                 const responseTwo = responses[1];
                 console.log(responseOne.data.seats);
                 this.setState({
-                    seats: responseOne.data.seats,
-                    aliases: responseTwo.data.aliases
+                    seats: responseOne.data.seats[1],
+                    aliases: responseTwo.data.aliases[0]
                 })
             })
         )
@@ -147,7 +148,8 @@ class App extends React.Component {
           <TargaryenRegion info={ this.state.region}></TargaryenRegion>
           <Lannister info = {this.state.coat} />
           <h1>{this.state.seats}</h1>
-          <All />
+          <h1>{this.state.aliases}</h1>
+          
           
 
 
