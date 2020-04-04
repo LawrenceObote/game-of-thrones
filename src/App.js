@@ -24,7 +24,10 @@ class App extends React.Component {
       coat: null,
       seats: null,
       aliases: null,
-      name: null
+      name: null,
+      povBooks1: null,
+      povBooks2: null,
+      povBooks3: null
     };
   }
 
@@ -81,6 +84,16 @@ class App extends React.Component {
        }
    }
 
+   async characterApiCall() {
+       try{
+        const res = await axios.get("http://www.anapioficeandfire.com/api/characters/232")
+       } catch(e){
+       console.error(e)
+       }
+   }
+
+   
+
 
 
 //    function responses () {
@@ -104,7 +117,55 @@ class App extends React.Component {
 //    }
   
 
+allPromises() {
+    const promise1 = axios.get('http://www.anapioficeandfire.com/api/characters/232')
+    const promise2 = axios.get('http://www.anapioficeandfire.com/api/characters/232');
+    const promise3 = axios.get('http://www.anapioficeandfire.com/api/characters/232');
 
+
+    const allPromises = [promise1, promise2, promise3];
+
+    Promise.all(allPromises).then(responses => {
+    
+
+
+      
+      
+      this.setState({
+          povBooks1: responses[0].data.povBooks[0],
+          povBooks2: responses[1].data.povBooks[1],
+          povBooks3: responses[2].data.povBooks[2]
+      });
+      this.povBooks();
+    }).catch(e => console.error(e));
+    // https://stackoverflow.com/questions/52669596/promise-all-with-axios
+
+  }
+
+
+
+  async povBooks() {
+      try{
+        const promise1 = await axios.get(this.state.povBooks1);
+        const promise2 = await axios.get(this.state.povBooks2);
+        const promise3 = await axios.get(this.state.povBooks3);
+    
+        this.setState({
+            povBooks1: promise1.data.name,
+            povBooks2: promise2.data.name,
+            povBooks3: promise3.data.name
+
+        })
+        // this.setState({
+        //     povBooks1: promise1,
+        //     povBooks2: promise2,
+        //     povBooks3: promise3
+        // })
+      } 
+      catch (e){
+      console.error(e);
+      }
+  }
 
   
 
@@ -114,6 +175,8 @@ class App extends React.Component {
     this.margaeryTyrellBorn();
     this.regionTargaryen();
     this.houseLannister();
+    this.allPromises();
+    
 
     let one = "http://www.anapioficeandfire.com/api/houses/17"
     let two = "http://www.anapioficeandfire.com/api/characters/901"
@@ -143,6 +206,9 @@ class App extends React.Component {
 
             console.error(errors);
         });
+
+
+        
   }
 
   render() {
@@ -155,6 +221,9 @@ class App extends React.Component {
           <h1>{this.state.seats}</h1>
           <h1>{this.state.aliases}</h1>
           <HouseStarkFounder info={ this.state.starkFounder } />
+          <h1>{this.state.povBooks1}</h1>
+          <h1>{this.state.povBooks2}</h1>
+          <h1>{this.state.povBooks3}</h1>
           
           
 
