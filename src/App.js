@@ -23,7 +23,8 @@ class App extends React.Component {
       region: null,
       coat: null,
       seats: null,
-      aliases: null
+      aliases: null,
+      name: null
     };
   }
 
@@ -116,20 +117,25 @@ class App extends React.Component {
 
     let one = "http://www.anapioficeandfire.com/api/houses/17"
     let two = "http://www.anapioficeandfire.com/api/characters/901"
+    let three = "http://www.anapioficeandfire.com/api/houses/362"
 
     const requestOne = axios.get(one);
     const requestTwo = axios.get(two);
+    const requestThree = axios.get(three);
 
     axios
-        .all([requestOne, requestTwo])
+        .all([requestOne, requestTwo, requestThree])
         .then(
             axios.spread((...responses) => {
                 const responseOne = responses[0];
                 const responseTwo = responses[1];
-                console.log(responseOne.data.seats);
+                const responseThree = responses[2];
+
+                    
                 this.setState({
                     seats: responseOne.data.seats[1],
-                    aliases: responseTwo.data.aliases[0]
+                    aliases: responseTwo.data.aliases[0],
+                    name: responseThree.data.founder
                 })
             })
         )
@@ -142,13 +148,13 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-          <HouseStarkFounder info={ this.state.starkFounder } />
           <Character info={ this.state.born } />
           <Tyrell info={ this.state.birthPlace }/>
           <TargaryenRegion info={ this.state.region}></TargaryenRegion>
           <Lannister info = {this.state.coat} />
           <h1>{this.state.seats}</h1>
           <h1>{this.state.aliases}</h1>
+          <HouseStarkFounder info={ this.state.starkFounder } />
           
           
 
