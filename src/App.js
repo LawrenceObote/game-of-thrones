@@ -8,6 +8,7 @@ import HouseStarkFounder from './components/HouseStarkFounder.js';
 import Tyrell from './components/Tyrell.js';
 import TargaryenRegion from './components/TargaryenRegion.js';
 import Lannister from './components/Lannister.js';
+import All from './components/All'
 
 class App extends React.Component {
   constructor(props) {
@@ -20,7 +21,8 @@ class App extends React.Component {
       born: null,
       birthPlace: null,
       region: null,
-      coat: null
+      coat: null,
+      seats: null
     };
   }
 
@@ -76,7 +78,31 @@ class App extends React.Component {
            console.error(e);
        }
    }
+
+
+
+//    function responses () {
+//     const requestOne = axios.get(one);
+//     const requestTwo = axios.get(two);
+
+//     axios
+//         .all([requestOne, requestTwo])
+//         .then(
+//             axios.spread((...responses) => {
+//                 const responseOne = responses[0];
+//                 const responseTwo = responses[1];
+//                 return <h1>{responseOne}</h1>;
+//                 console.log(responseOne, responseTwo);
+//             })
+//         )
+//         .catch(errors => {
+
+//             console.error(errors);
+//         });
+//    }
   
+
+
 
   
 
@@ -86,6 +112,30 @@ class App extends React.Component {
     this.margaeryTyrellBorn();
     this.regionTargaryen();
     this.houseLannister();
+
+    let one = "http://www.anapioficeandfire.com/api/houses/17"
+    let two = "http://www.anapioficeandfire.com/api/characters/901"
+
+    const requestOne = axios.get(one);
+    const requestTwo = axios.get(two);
+
+    axios
+        .all([requestOne, requestTwo])
+        .then(
+            axios.spread((...responses) => {
+                const responseOne = responses[0];
+                const responseTwo = responses[1];
+                console.log(responseOne.data.seats);
+                this.setState({
+                    seats: responseOne.data.seats,
+                    aliases: responseTwo.data.aliases
+                })
+            })
+        )
+        .catch(errors => {
+
+            console.error(errors);
+        });
   }
 
   render() {
@@ -96,6 +146,9 @@ class App extends React.Component {
           <Tyrell info={ this.state.birthPlace }/>
           <TargaryenRegion info={ this.state.region}></TargaryenRegion>
           <Lannister info = {this.state.coat} />
+          <h1>{this.state.seats}</h1>
+          <All />
+          
 
 
       </div>
